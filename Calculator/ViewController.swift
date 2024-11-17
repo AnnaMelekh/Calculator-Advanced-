@@ -35,15 +35,17 @@ class ViewController: UIViewController {
         
         isFinishedTypingNumber = true
         
-       
-        
         if let calcMethod = sender.currentTitle {
-            switch calcMethod {
-            case "AC": displayLabel.text = "0";
-            case "+/-":  displayValue = displayValue * -1;
-            case "%":  displayValue = displayValue / 100;
-            default: print("default")
+            
+            let calculator = CalculatorLogic(number: displayValue)
+            
+            guard let result = calculator.calculate(symbol: calcMethod) else {
+                fatalError("the result is not a digit, nil ")
             }
+            
+            displayValue = result
+            
+
             
         }
     }
