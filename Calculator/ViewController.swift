@@ -31,21 +31,20 @@ class ViewController: UIViewController {
         
     }
     
+    private var calculator = CalculatorLogic()
+
     @IBAction func calcButtonPressed(_ sender: UIButton) {
         
         isFinishedTypingNumber = true
         
+        calculator.setNumber(displayValue)
+        
         if let calcMethod = sender.currentTitle {
             
-            let calculator = CalculatorLogic(number: displayValue)
             
-            guard let result = calculator.calculate(symbol: calcMethod) else {
-                fatalError("the result is not a digit, nil ")
+            if let result = calculator.calculate(symbol: calcMethod)  {
+                displayValue = result
             }
-            
-            displayValue = result
-            
-
             
         }
     }
@@ -62,21 +61,13 @@ class ViewController: UIViewController {
                 isFinishedTypingNumber = false
                 
             } else {
-                
-                if numValue == "." {
-                    
-                    
-                    let isInt = floor(displayValue) == displayValue
-                    
-                    if !isInt {
-                        return    // stops,  not appending
+                if let labelText = displayLabel.text {
+                    if !labelText.contains(".") || numValue != "." {
+                        displayLabel.text = labelText + numValue
                     }
                 }
-                
-                displayLabel.text! += numValue
             }
         }
-        
     }
     
 }
